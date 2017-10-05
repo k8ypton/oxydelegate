@@ -1,0 +1,7 @@
+---
+
+- name: copy config file
+  copy:
+    src: ../files/{{server_name}}_config.json
+    dest: '{{oxy_base_dir}}/config.json'
+    force: yes
