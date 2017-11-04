@@ -11,6 +11,8 @@ iptables -A INPUT -p tcp -m tcp --dport {{http_port}} -j ACCEPT
 iptables -A OUTPUT -p tcp --sport {{http_port}} -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport {{https_port}} -j ACCEPT
 iptables -A OUTPUT -p tcp --sport {{https_port}} -m state --state ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp -m tcp --dport {{checker_port}} -j ACCEPT
+iptables -A OUTPUT -p tcp --sport {{checker_port}} -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p udp --sport 123 --dport 123 -j ACCEPT
 iptables -A OUTPUT -p udp --sport 123 --dport 123 -j ACCEPT
 iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port {{http_port}}

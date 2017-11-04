@@ -1,8 +1,13 @@
 ---
 
+- name: get the hostname
+  shell: hostname
+  register: servername
+
 - name: change hostname with command
   shell: hostname {{server_name}}
   become: yes
+  when: servername.stdout != "{{server_name}}"
 
 - name: backup hosts file
   become: yes
@@ -10,6 +15,7 @@
     src: /etc/hosts
     dest: /etc/hosts.bkp
     force: no
+  when: servername.stdout != "{{server_name}}"
 
 - name: replace hostname in /etc/hosts
   become: yes
@@ -19,6 +25,7 @@
     owner: root
     group: root
     mode: "u=rw,g=rw,o=r"
+  when: servername.stdout != "{{server_name}}"
 
 # - name: backup hostname file
 #   copy:
@@ -34,7 +41,9 @@
     owner: root
     group: root
     mode: "u=rwx,g=rx,o=rx"
+  when: servername.stdout != "{{server_name}}"
 
 - name: set it for the service
   become: yes
   shell: hostnamectl set-hostname {{server_name}}
+  when: servername.stdout != "{{server_name}}"
